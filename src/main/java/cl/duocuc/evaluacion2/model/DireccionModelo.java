@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
-@Table(name = "DireccionModelo")
+@Table(name = "Direccion")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,5 +23,6 @@ public class DireccionModelo {
     @Column(nullable = false)
     private int num_direccion;
 
-
+    @OneToMany(mappedBy = "direccion", cascade = CascadeType.ALL)
+    private List<UsuarioModelo> usuarios;
 }

@@ -6,13 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "UsuarioModelo")
+@Table(name = "Usuario")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UsuarioModelo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String rut_usur;
 
     @Column(nullable = false)
@@ -23,5 +22,9 @@ public class UsuarioModelo {
 
     @Column(nullable = false)
     private String correo_usur;
+
+    @ManyToOne
+    @JoinColumn(name = "id_direccion")
+    private DireccionModelo direccion;
 
 }

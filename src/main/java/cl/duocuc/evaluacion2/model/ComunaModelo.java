@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
-@Table(name = "ComunaModelo")
+@Table(name = "Comuna")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,4 +19,9 @@ public class ComunaModelo {
 
     @Column(nullable = false)
     private String nomb_comuna;
+
+    @OneToMany(mappedBy = "comuna", cascade = CascadeType.ALL)
+    private List<DireccionModelo> direcciones;
+
+
 }
