@@ -15,13 +15,13 @@ import java.util.List;
 public class DireccionModelo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_direccion;
+    private int idDireccion;
 
     @Column(nullable = false)
-    private String nomb_direccion;
+    private String nombDireccion;
 
     @Column(nullable = false)
-    private int num_direccion;
+    private int numDireccion;
 
     @OneToMany(mappedBy = "direccion", cascade = CascadeType.ALL)
     private List<UsuarioModelo> usuarios;

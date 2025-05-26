@@ -12,16 +12,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UsuarioModelo {
     @Id
-    private String rut_usur;
+    private String rutUsur;
 
     @Column(nullable = false)
-    private String nombre_usur;
+    private String nombreUsur;
 
     @Column(nullable = false)
-    private String apellido_usur;
+    private String apellidoUsur;
 
     @Column(nullable = false)
-    private String correo_usur;
+    private String correoUsur;
 
     @ManyToOne
     @JoinColumn(name = "id_direccion")

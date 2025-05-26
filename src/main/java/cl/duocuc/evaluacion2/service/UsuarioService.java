@@ -1,7 +1,6 @@
 package cl.duocuc.evaluacion2.service;
 
 import cl.duocuc.evaluacion2.model.UsuarioModelo;
-import cl.duocuc.evaluacion2.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

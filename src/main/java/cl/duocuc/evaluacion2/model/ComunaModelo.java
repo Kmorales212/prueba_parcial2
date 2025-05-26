@@ -15,10 +15,10 @@ import java.util.List;
 public class ComunaModelo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_comuna;
+    private int idComuna;
 
     @Column(nullable = false)
-    private String nomb_comuna;
+    private String nombidComuna;
 
     @OneToMany(mappedBy = "comuna", cascade = CascadeType.ALL)
     private List<DireccionModelo> direcciones;
