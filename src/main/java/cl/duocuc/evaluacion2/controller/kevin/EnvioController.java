@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/envios")
 public class EnvioController {
 
-    @Autowired
+  /*  @Autowired
     private EnvioService envioService;
 
     @GetMapping
@@ -47,4 +47,6 @@ public class EnvioController {
         }
         return ResponseEntity.noContent().build();
     }
+
+   */
 }

@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Entity
 public class EnvioModel {
 
-    @Id
+   /* @Id
     private String idEnvio;
     private LocalDate fechaEnvio;
 
@@ -18,5 +18,5 @@ public class EnvioModel {
     private EstadoEnvio estado;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private DireccionModel direccionEntrega;
+    private DireccionModel direccionEntrega;*/
 }

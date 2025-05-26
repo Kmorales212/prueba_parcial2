@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class RutaService {
 
-    @Autowired
+   /* @Autowired
     private RutaRepository rutaRepository;
 
     public List<RutaModel> getAllRutas() {
@@ -50,4 +50,6 @@ public class RutaService {
         rutaRepository.deleteById(id);
         return true;
     }
+
+    */
 }

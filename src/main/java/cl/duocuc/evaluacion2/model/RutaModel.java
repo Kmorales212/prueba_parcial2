@@ -9,16 +9,16 @@ import java.util.List;
 @Entity
 public class RutaModel {
 
-    @Id
-    private String idRuta;
+   /*@Id
+   private String idRuta;
 
-    private LocalDateTime fechaInicio;
+   private LocalDateTime fechaInicio;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<EnvioModel> envios;
+   @OneToMany(cascade = CascadeType.ALL)
+   private List<EnvioModel> envios;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private DireccionModel direccionInicio;
+   @OneToOne(cascade = CascadeType.ALL)
+   private DireccionModel direccionInicio;
 
     @OneToOne(cascade = CascadeType.ALL)
     private DireccionModel direccionDestino;
@@ -31,5 +31,5 @@ public class RutaModel {
 
     private String descripcion;
 
-
+*/
 }

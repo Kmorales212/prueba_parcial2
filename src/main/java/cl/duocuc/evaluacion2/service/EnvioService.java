@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class EnvioService {
 
-    @Autowired
+   /* @Autowired
     private EnvioRepository envioRepository;
 
     public List<EnvioModel> getAllEnvios() {
@@ -45,4 +45,6 @@ public class EnvioService {
         envioRepository.deleteById(id);
         return true;
     }
+
+    */
 }
