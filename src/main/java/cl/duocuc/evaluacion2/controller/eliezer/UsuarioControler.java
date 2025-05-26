@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/user/Usuarios")
+@RequestMapping("/api/user")
 public class UsuarioControler {
 
     @Autowired
     private UsuarioService usuarioService;
 
-    @GetMapping
+    @GetMapping("/listar")
     public ResponseEntity<List<UsuarioModelo>> listarUsuarios() {
         List<UsuarioModelo> usuarios = usuarioService.findAll();
         if (usuarios.isEmpty()) {

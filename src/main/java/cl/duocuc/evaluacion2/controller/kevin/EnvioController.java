@@ -1,6 +1,6 @@
 package cl.duocuc.evaluacion2.controller.kevin;
 
-import cl.duocuc.evaluacion2.model.EnvioModel;
+import cl.duocuc.evaluacion2.model.EnvioModelo;
 import cl.duocuc.evaluacion2.service.EnvioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,28 +12,28 @@ import java.util.List;
 @RequestMapping("/envios")
 public class EnvioController {
 
-  /*  @Autowired
+ @Autowired
     private EnvioService envioService;
 
     @GetMapping
-    public List<EnvioModel> getAllEnvios() {
+    public List<EnvioModelo> getAllEnvios() {
         return envioService.getAllEnvios();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EnvioModel> getEnvioById(@PathVariable String id) {
+    public ResponseEntity<EnvioModelo> getEnvioById(@PathVariable String id) {
         return envioService.getEnvioById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public EnvioModel createEnvio(@RequestBody EnvioModel envio) {
+    public EnvioModelo createEnvio(@RequestBody EnvioModelo envio) {
         return envioService.createEnvio(envio);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EnvioModel> updateEnvio(@PathVariable String id, @RequestBody EnvioModel envioDetails) {
+    public ResponseEntity<EnvioModelo> updateEnvio(@PathVariable String id, @RequestBody EnvioModelo envioDetails) {
         return envioService.updateEnvio(id, envioDetails)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -48,5 +48,5 @@ public class EnvioController {
         return ResponseEntity.noContent().build();
     }
 
-   */
+
 }

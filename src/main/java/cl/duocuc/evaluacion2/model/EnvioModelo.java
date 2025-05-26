@@ -7,9 +7,9 @@ import lombok.Data;
 import java.time.LocalDate;
 @Data
 @Entity
-public class EnvioModel {
+public class EnvioModelo {
 
-   /* @Id
+@Id
     private String idEnvio;
     private LocalDate fechaEnvio;
 
@@ -18,5 +18,5 @@ public class EnvioModel {
     private EstadoEnvio estado;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private DireccionModel direccionEntrega;*/
+    private DireccionModelo direccionEntrega;
 }

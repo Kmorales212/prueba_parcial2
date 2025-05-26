@@ -6,22 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "UsuarioModelo")
+@Table(name = "ComunaModelo")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UsuarioModelo {
+public class ComunaModelo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String rut_usur;
+    private int id_comuna;
 
     @Column(nullable = false)
-    private String nombre_usur;
-
-    @Column(nullable = false)
-    private String apellido_usur;
-
-    @Column(nullable = false)
-    private String correo_usur;
-
+    private String nomb_comuna;
 }

@@ -1,6 +1,6 @@
 package cl.duocuc.evaluacion2.service;
 
-import cl.duocuc.evaluacion2.model.EnvioModel;
+import cl.duocuc.evaluacion2.model.EnvioModelo;
 import cl.duocuc.evaluacion2.repository.EnvioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,27 +11,27 @@ import java.util.Optional;
 @Service
 public class EnvioService {
 
-   /* @Autowired
+ @Autowired
     private EnvioRepository envioRepository;
 
-    public List<EnvioModel> getAllEnvios() {
+    public List<EnvioModelo> getAllEnvios() {
         return envioRepository.findAll();
     }
 
-    public Optional<EnvioModel> getEnvioById(String id) {
+    public Optional<EnvioModelo> getEnvioById(String id) {
         return envioRepository.findById(id);
     }
 
-    public EnvioModel createEnvio(EnvioModel envio) {
+    public EnvioModelo createEnvio(EnvioModelo envio) {
         return envioRepository.save(envio);
     }
 
-    public Optional<EnvioModel> updateEnvio(String id, EnvioModel envioDetails) {
-        Optional<EnvioModel> optionalEnvio = envioRepository.findById(id);
+    public Optional<EnvioModelo> updateEnvio(String id, EnvioModelo envioDetails) {
+        Optional<EnvioModelo> optionalEnvio = envioRepository.findById(id);
         if (optionalEnvio.isEmpty()) {
             return Optional.empty();
         }
-        EnvioModel envio = optionalEnvio.get();
+        EnvioModelo envio = optionalEnvio.get();
         envio.setFechaEnvio(envioDetails.getFechaEnvio());
         envio.setEstado(envioDetails.getEstado());
         envio.setDireccionEntrega(envioDetails.getDireccionEntrega());
@@ -46,5 +46,5 @@ public class EnvioService {
         return true;
     }
 
-    */
+
 }

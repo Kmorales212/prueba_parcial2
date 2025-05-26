@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/rutas")
 public class RutaController {
 
-    /*@Autowired
+    @Autowired
     private RutaService rutaService;
 
     @GetMapping
@@ -48,5 +48,5 @@ public class RutaController {
         return ResponseEntity.noContent().build();
     }
 
-     */
+
 }

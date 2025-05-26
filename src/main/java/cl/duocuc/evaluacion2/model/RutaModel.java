@@ -9,27 +9,27 @@ import java.util.List;
 @Entity
 public class RutaModel {
 
-   /*@Id
+   @Id
    private String idRuta;
 
    private LocalDateTime fechaInicio;
 
    @OneToMany(cascade = CascadeType.ALL)
-   private List<EnvioModel> envios;
+   private List<EnvioModelo> envios;
 
    @OneToOne(cascade = CascadeType.ALL)
-   private DireccionModel direccionInicio;
+   private DireccionModelo direccionInicio;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private DireccionModel direccionDestino;
+    private DireccionModelo direccionDestino;
 
     @ManyToOne
-    private CiudadModel ciudad;
+    private CiudadModelo ciudad;
 
     @Enumerated(EnumType.STRING)
     private EstadoRuta estado;
 
     private String descripcion;
 
-*/
+
 }
