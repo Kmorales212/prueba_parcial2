@@ -16,14 +16,14 @@ public class CiudadController {
     private CiudadService ciudadService;
 
     // Obtener todas las ciudades
-    @GetMapping
+    @GetMapping("/listarTodas")
     public ResponseEntity<List<CiudadModelo>> listarTodas() {
         List<CiudadModelo> ciudades = ciudadService.findAll();
         return ResponseEntity.ok(ciudades);
     }
 
     // Obtener una ciudad por ID
-    @GetMapping("/{id}")
+    @GetMapping("/obtenerPorId/{id}")
     public ResponseEntity<CiudadModelo> obtenerPorId(@PathVariable int id) {
         return ciudadService.findById(id)
                 .map(ResponseEntity::ok)
@@ -31,14 +31,14 @@ public class CiudadController {
     }
 
     // Crear una nueva ciudad
-    @PostMapping
+    @PostMapping("/crear")
     public ResponseEntity<CiudadModelo> crear(@RequestBody CiudadModelo ciudad) {
         CiudadModelo creada = ciudadService.save(ciudad);
         return ResponseEntity.ok(creada);
     }
 
     // Actualizar una ciudad existente
-    @PutMapping("/{id}")
+    @PutMapping("/actualizar/{id}")
     public ResponseEntity<CiudadModelo> actualizar(@PathVariable int id, @RequestBody CiudadModelo ciudad) {
         return ciudadService.findById(id).map(c -> {
             ciudad.setIdCiudad(id);
@@ -48,7 +48,7 @@ public class CiudadController {
     }
 
     // Eliminar una ciudad
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable int id) {
         if (ciudadService.findById(id).isPresent()) {
             ciudadService.deleteById(id);

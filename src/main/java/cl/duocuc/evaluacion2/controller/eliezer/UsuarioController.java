@@ -17,13 +17,13 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     // Obtener todos los usuarios
-    @GetMapping
-    public ResponseEntity<List<UsuarioModelo>> listarTodos() {
+    @GetMapping("/listarTodas")
+    public ResponseEntity<List<UsuarioModelo>> listarTodas() {
         return ResponseEntity.ok(usuarioService.findAll());
     }
 
     // Obtener un usuario por RUT
-    @GetMapping("/{rut}")
+    @GetMapping("/obtenerPorRut/{rut}")
     public ResponseEntity<UsuarioModelo> obtenerPorRut(@PathVariable String rut) {
         return usuarioService.findById(rut)
                 .map(ResponseEntity::ok)
@@ -31,14 +31,14 @@ public class UsuarioController {
     }
 
     // Crear un usuario simple
-    @PostMapping
+    @PostMapping("/crear")
     public ResponseEntity<UsuarioModelo> crear(@RequestBody UsuarioModelo usuario) {
         UsuarioModelo creado = usuarioService.save(usuario);
         return ResponseEntity.ok(creado);
     }
 
     // Actualizar un usuario existente
-    @PutMapping("/{rut}")
+    @PutMapping("/actualizar/{rut}")
     public ResponseEntity<UsuarioModelo> actualizar(@PathVariable String rut, @RequestBody UsuarioModelo usuario) {
         return usuarioService.findById(rut).map(u -> {
             usuario.setRutUsur(rut);
@@ -48,7 +48,7 @@ public class UsuarioController {
     }
 
     // Eliminar un usuario
-    @DeleteMapping("/{rut}")
+    @DeleteMapping("/eliminar/{rut}")
     public ResponseEntity<Void> eliminar(@PathVariable String rut) {
         if (usuarioService.findById(rut).isPresent()) {
             usuarioService.deleteById(rut);

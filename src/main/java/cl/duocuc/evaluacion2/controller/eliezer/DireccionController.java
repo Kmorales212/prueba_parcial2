@@ -16,13 +16,13 @@ public class DireccionController {
     private DireccionService direccionService;
 
     // Obtener todas las direcciones
-    @GetMapping
+    @GetMapping("/listarTodas")
     public ResponseEntity<List<DireccionModelo>> listarTodas() {
         return ResponseEntity.ok(direccionService.findAll());
     }
 
     // Obtener una dirección por ID
-    @GetMapping("/{id}")
+    @GetMapping("/obtenerPorId/{id}")
     public ResponseEntity<DireccionModelo> obtenerPorId(@PathVariable int id) {
         return direccionService.findById(id)
                 .map(ResponseEntity::ok)
@@ -30,14 +30,14 @@ public class DireccionController {
     }
 
     // Crear una nueva dirección
-    @PostMapping
+    @PostMapping("/crear")
     public ResponseEntity<DireccionModelo> crear(@RequestBody DireccionModelo direccion) {
         DireccionModelo creada = direccionService.save(direccion);
         return ResponseEntity.ok(creada);
     }
 
     // Actualizar una dirección existente
-    @PutMapping("/{id}")
+    @PutMapping("/actualizar/{id}")
     public ResponseEntity<DireccionModelo> actualizar(@PathVariable int id, @RequestBody DireccionModelo direccion) {
         return direccionService.findById(id).map(d -> {
             direccion.setIdDireccion(id);
@@ -47,7 +47,7 @@ public class DireccionController {
     }
 
     // Eliminar una dirección
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable int id) {
         if (direccionService.findById(id).isPresent()) {
             direccionService.deleteById(id);

@@ -16,13 +16,13 @@ public class ComunaController {
     private ComunaService comunaService;
 
     // Obtener todas las comunas
-    @GetMapping
+    @GetMapping("/listarTodas")
     public ResponseEntity<List<ComunaModelo>> listarTodas() {
         return ResponseEntity.ok(comunaService.findAll());
     }
 
     // Obtener una comuna por ID
-    @GetMapping("/{id}")
+    @GetMapping("/obtenerPorId/{id}")
     public ResponseEntity<ComunaModelo> obtenerPorId(@PathVariable int id) {
         return comunaService.findById(id)
                 .map(ResponseEntity::ok)
@@ -30,14 +30,14 @@ public class ComunaController {
     }
 
     // Crear una nueva comuna
-    @PostMapping
+    @PostMapping("/crear")
     public ResponseEntity<ComunaModelo> crear(@RequestBody ComunaModelo comuna) {
         ComunaModelo creada = comunaService.save(comuna);
         return ResponseEntity.ok(creada);
     }
 
     // Actualizar una comuna existente
-    @PutMapping("/{id}")
+    @PutMapping("/actualizar/{id}")
     public ResponseEntity<ComunaModelo> actualizar(@PathVariable int id, @RequestBody ComunaModelo comuna) {
         return comunaService.findById(id).map(c -> {
             comuna.setIdComuna(id);
@@ -47,7 +47,7 @@ public class ComunaController {
     }
 
     // Eliminar una comuna
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable int id) {
         if (comunaService.findById(id).isPresent()) {
             comunaService.deleteById(id);
