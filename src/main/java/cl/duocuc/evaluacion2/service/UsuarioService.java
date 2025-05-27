@@ -1,32 +1,30 @@
 package cl.duocuc.evaluacion2.service;
 
+import cl.duocuc.evaluacion2.model.DireccionModelo;
 import cl.duocuc.evaluacion2.model.UsuarioModelo;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
-@Service
-@Transactional
 public class UsuarioService {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioRepository;
 
     public List<UsuarioModelo> findAll() {
         return usuarioRepository.findAll();
     }
 
-    public UsuarioModelo findByrut(String rut ) {
-        return usuarioRepository.findByRut(rut);
+    public Optional<UsuarioModelo> findById(int id) {
+        return usuarioRepository.findById(id);
     }
 
-    public UsuarioModelo save(UsuarioModelo usuario) {
-        return usuarioRepository.save(usuario);
+    public UsuarioModelo save(UsuarioModelo direccion) {
+        return usuarioRepository.save(direccion);
     }
 
-    public void delete(UsuarioModelo usuario) {
-        usuarioRepository.delete(usuario);
+    public void deleteById(int id) {
+        usuarioRepository.deleteById(id);
     }
 }
