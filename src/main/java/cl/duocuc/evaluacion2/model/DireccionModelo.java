@@ -1,32 +1,56 @@
 package cl.duocuc.evaluacion2.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.util.List;
-
+//EliezerCarrasco
 @Entity
-@Table(name = "Direccion")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "direccion")
 public class DireccionModelo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idDireccion;
+    private Integer idDireccion;
 
-    @Column(nullable = false)
+    @Column(name = "nomb_direccion")
     private String nombDireccion;
 
-    @Column(nullable = false)
-    private int numDireccion;
+    @Column(name = "num_direccion")
+    private Integer numDireccion;
 
-    @OneToMany(mappedBy = "direccion", cascade = CascadeType.ALL)
-    private List<UsuarioModelo> usuarios;
-
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_comuna")
     private ComunaModelo comuna;
+
+
+    public Integer getIdDireccion() {
+        return idDireccion;
+    }
+
+    public void setIdDireccion(Integer idDireccion) {
+        this.idDireccion = idDireccion;
+    }
+
+    public String getNombDireccion() {
+        return nombDireccion;
+    }
+
+    public void setNombDireccion(String nombDireccion) {
+        this.nombDireccion = nombDireccion;
+    }
+
+    public Integer getNumDireccion() {
+        return numDireccion;
+    }
+
+    public void setNumDireccion(Integer numDireccion) {
+        this.numDireccion = numDireccion;
+    }
+
+    public ComunaModelo getComuna() {
+        return comuna;
+    }
+
+    public void setComuna(ComunaModelo comuna) {
+        this.comuna = comuna;
+    }
 }

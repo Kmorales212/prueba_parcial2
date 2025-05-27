@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+//EliezerCarrasco
 @RestController
 @RequestMapping("/api/direcciones")
 public class DireccionController {
@@ -15,11 +15,13 @@ public class DireccionController {
     @Autowired
     private DireccionService direccionService;
 
+    // Obtener todas las direcciones
     @GetMapping
     public ResponseEntity<List<DireccionModelo>> listarTodas() {
         return ResponseEntity.ok(direccionService.findAll());
     }
 
+    // Obtener una dirección por ID
     @GetMapping("/{id}")
     public ResponseEntity<DireccionModelo> obtenerPorId(@PathVariable int id) {
         return direccionService.findById(id)
@@ -27,22 +29,31 @@ public class DireccionController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // Crear una nueva dirección
     @PostMapping
     public ResponseEntity<DireccionModelo> crear(@RequestBody DireccionModelo direccion) {
-        return ResponseEntity.ok(direccionService.save(direccion));
+        DireccionModelo creada = direccionService.save(direccion);
+        return ResponseEntity.ok(creada);
     }
 
+    // Actualizar una dirección existente
     @PutMapping("/{id}")
     public ResponseEntity<DireccionModelo> actualizar(@PathVariable int id, @RequestBody DireccionModelo direccion) {
         return direccionService.findById(id).map(d -> {
             direccion.setIdDireccion(id);
-            return ResponseEntity.ok(direccionService.save(direccion));
+            DireccionModelo actualizada = direccionService.save(direccion);
+            return ResponseEntity.ok(actualizada);
         }).orElse(ResponseEntity.notFound().build());
     }
 
+    // Eliminar una dirección
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable int id) {
-        direccionService.deleteById(id);
-        return ResponseEntity.noContent().build();
+        if (direccionService.findById(id).isPresent()) {
+            direccionService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

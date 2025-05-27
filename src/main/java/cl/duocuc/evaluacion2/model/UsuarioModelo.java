@@ -1,30 +1,67 @@
 package cl.duocuc.evaluacion2.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
+//EliezerCarrasco
 @Entity
-@Table(name = "Usuario")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "usuario")
 public class UsuarioModelo {
+
     @Id
+    @Column(name = "rut_usur")
     private String rutUsur;
 
-    @Column(nullable = false)
+    @Column(name = "nombre_usur")
     private String nombreUsur;
 
-    @Column(nullable = false)
+    @Column(name = "apellido_usur")
     private String apellidoUsur;
 
-    @Column(nullable = false)
+    @Column(name = "correo_usur")
     private String correoUsur;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_direccion")
     private DireccionModelo direccion;
 
+
+    public String getRutUsur() {
+        return rutUsur;
+    }
+
+    public void setRutUsur(String rutUsur) {
+        this.rutUsur = rutUsur;
+    }
+
+    public String getNombreUsur() {
+        return nombreUsur;
+    }
+
+    public void setNombreUsur(String nombreUsur) {
+        this.nombreUsur = nombreUsur;
+    }
+
+    public String getApellidoUsur() {
+        return apellidoUsur;
+    }
+
+    public void setApellidoUsur(String apellidoUsur) {
+        this.apellidoUsur = apellidoUsur;
+    }
+
+    public String getCorreoUsur() {
+        return correoUsur;
+    }
+
+    public void setCorreoUsur(String correoUsur) {
+        this.correoUsur = correoUsur;
+    }
+
+    public DireccionModelo getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(DireccionModelo direccion) {
+        this.direccion = direccion;
+    }
 }

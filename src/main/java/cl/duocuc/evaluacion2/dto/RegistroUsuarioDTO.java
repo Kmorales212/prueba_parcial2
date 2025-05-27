@@ -1,7 +1,7 @@
 package cl.duocuc.evaluacion2.dto;
 
 import lombok.Data;
-
+//EliezerCarrasco
 @Data
 public class RegistroUsuarioDTO {
 

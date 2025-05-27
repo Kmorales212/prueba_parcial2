@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+//EliezerCarrasco
 @RestController
 @RequestMapping("/api/ciudades")
 public class CiudadController {
@@ -15,11 +15,14 @@ public class CiudadController {
     @Autowired
     private CiudadService ciudadService;
 
+    // Obtener todas las ciudades
     @GetMapping
     public ResponseEntity<List<CiudadModelo>> listarTodas() {
-        return ResponseEntity.ok(ciudadService.findAll());
+        List<CiudadModelo> ciudades = ciudadService.findAll();
+        return ResponseEntity.ok(ciudades);
     }
 
+    // Obtener una ciudad por ID
     @GetMapping("/{id}")
     public ResponseEntity<CiudadModelo> obtenerPorId(@PathVariable int id) {
         return ciudadService.findById(id)
@@ -27,22 +30,31 @@ public class CiudadController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // Crear una nueva ciudad
     @PostMapping
     public ResponseEntity<CiudadModelo> crear(@RequestBody CiudadModelo ciudad) {
-        return ResponseEntity.ok(ciudadService.save(ciudad));
+        CiudadModelo creada = ciudadService.save(ciudad);
+        return ResponseEntity.ok(creada);
     }
 
+    // Actualizar una ciudad existente
     @PutMapping("/{id}")
     public ResponseEntity<CiudadModelo> actualizar(@PathVariable int id, @RequestBody CiudadModelo ciudad) {
         return ciudadService.findById(id).map(c -> {
             ciudad.setIdCiudad(id);
-            return ResponseEntity.ok(ciudadService.save(ciudad));
+            CiudadModelo actualizada = ciudadService.save(ciudad);
+            return ResponseEntity.ok(actualizada);
         }).orElse(ResponseEntity.notFound().build());
     }
 
+    // Eliminar una ciudad
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable int id) {
-        ciudadService.deleteById(id);
-        return ResponseEntity.noContent().build();
+        if (ciudadService.findById(id).isPresent()) {
+            ciudadService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

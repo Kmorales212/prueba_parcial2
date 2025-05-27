@@ -1,31 +1,57 @@
 package cl.duocuc.evaluacion2.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.util.List;
 
+//EliezerCarrasco
 @Entity
-@Table(name = "Comuna")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "comuna")
 public class ComunaModelo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idComuna;
+    private Integer idComuna;
 
-    @Column(nullable = false)
+    @Column(name = "nom_comuna")
     private String nomComuna;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_ciudad")
+    private CiudadModelo ciudad;
 
     @OneToMany(mappedBy = "comuna", cascade = CascadeType.ALL)
     private List<DireccionModelo> direcciones;
 
-    @ManyToOne
-    @JoinColumn(name = "id_ciudad")
-    private CiudadModelo ciudad;
 
+    public Integer getIdComuna() {
+        return idComuna;
+    }
 
+    public void setIdComuna(Integer idComuna) {
+        this.idComuna = idComuna;
+    }
+
+    public String getNomComuna() {
+        return nomComuna;
+    }
+
+    public void setNomComuna(String nomComuna) {
+        this.nomComuna = nomComuna;
+    }
+
+    public CiudadModelo getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(CiudadModelo ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public List<DireccionModelo> getDirecciones() {
+        return direcciones;
+    }
+
+    public void setDirecciones(List<DireccionModelo> direcciones) {
+        this.direcciones = direcciones;
+    }
 }

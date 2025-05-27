@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+//EliezerCarrasco
 @RestController
 @RequestMapping("/api/comunas")
 public class ComunaController {
@@ -15,11 +15,13 @@ public class ComunaController {
     @Autowired
     private ComunaService comunaService;
 
+    // Obtener todas las comunas
     @GetMapping
     public ResponseEntity<List<ComunaModelo>> listarTodas() {
         return ResponseEntity.ok(comunaService.findAll());
     }
 
+    // Obtener una comuna por ID
     @GetMapping("/{id}")
     public ResponseEntity<ComunaModelo> obtenerPorId(@PathVariable int id) {
         return comunaService.findById(id)
@@ -27,24 +29,31 @@ public class ComunaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // Crear una nueva comuna
     @PostMapping
     public ResponseEntity<ComunaModelo> crear(@RequestBody ComunaModelo comuna) {
-        return ResponseEntity.ok(comunaService.save(comuna));
+        ComunaModelo creada = comunaService.save(comuna);
+        return ResponseEntity.ok(creada);
     }
 
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable int id) {
-        comunaService.deleteById(id);
-        return ResponseEntity.noContent().build();
-    }
-
-
+    // Actualizar una comuna existente
     @PutMapping("/{id}")
     public ResponseEntity<ComunaModelo> actualizar(@PathVariable int id, @RequestBody ComunaModelo comuna) {
         return comunaService.findById(id).map(c -> {
             comuna.setIdComuna(id);
-            return ResponseEntity.ok(comunaService.save(comuna));
+            ComunaModelo actualizada = comunaService.save(comuna);
+            return ResponseEntity.ok(actualizada);
         }).orElse(ResponseEntity.notFound().build());
+    }
+
+    // Eliminar una comuna
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable int id) {
+        if (comunaService.findById(id).isPresent()) {
+            comunaService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
