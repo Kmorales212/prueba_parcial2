@@ -18,7 +18,7 @@ public class ComunaModelo {
     private int idComuna;
 
     @Column(nullable = false)
-    private String nombidComuna;
+    private String nomComuna;
 
     @OneToMany(mappedBy = "comuna", cascade = CascadeType.ALL)
     private List<DireccionModelo> direcciones;

@@ -1,6 +1,5 @@
 package cl.duocuc.evaluacion2.service;
 
-import cl.duocuc.evaluacion2.model.CiudadModelo;
 import cl.duocuc.evaluacion2.model.ComunaModelo;
 import cl.duocuc.evaluacion2.repository.ComunaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,7 @@ public class ComunaService {
     public Optional<ComunaModelo> findById(int id) {
         return comunaRepository.findById(id);
     }
-
-    public CiudadModelo save(ComunaModelo comuna) {
+    public ComunaModelo save(ComunaModelo comuna) {
         return comunaRepository.save(comuna);
     }
 
