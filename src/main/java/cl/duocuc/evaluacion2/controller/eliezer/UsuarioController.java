@@ -1,5 +1,6 @@
 package cl.duocuc.evaluacion2.controller.eliezer;
 
+import cl.duocuc.evaluacion2.dto.RegistroUsuarioCompletoDTO;
 import cl.duocuc.evaluacion2.dto.RegistroUsuarioDTO;
 import cl.duocuc.evaluacion2.model.UsuarioModelo;
 import cl.duocuc.evaluacion2.service.UsuarioService;
@@ -51,5 +52,10 @@ public class UsuarioController {
     public ResponseEntity<UsuarioModelo> registrarConDireccion(@RequestBody RegistroUsuarioDTO dto) {
         UsuarioModelo nuevoUsuario = usuarioService.registrarUsuarioConDireccion(dto);
         return ResponseEntity.ok(nuevoUsuario);
+    }
+    @PostMapping("/registrar-completo")
+    public ResponseEntity<UsuarioModelo> registrarUsuarioCompleto(@RequestBody RegistroUsuarioCompletoDTO dto) {
+        UsuarioModelo usuario = usuarioService.registrarUsuarioCompleto(dto);
+        return ResponseEntity.ok(usuario);
     }
 }

@@ -23,5 +23,9 @@ public class ComunaModelo {
     @OneToMany(mappedBy = "comuna", cascade = CascadeType.ALL)
     private List<DireccionModelo> direcciones;
 
+    @ManyToOne
+    @JoinColumn(name = "id_ciudad")
+    private CiudadModelo ciudad;
+
 
 }

@@ -25,4 +25,8 @@ public class DireccionModelo {
 
     @OneToMany(mappedBy = "direccion", cascade = CascadeType.ALL)
     private List<UsuarioModelo> usuarios;
+
+    @ManyToOne
+    @JoinColumn(name = "id_comuna")
+    private ComunaModelo comuna;
 }
