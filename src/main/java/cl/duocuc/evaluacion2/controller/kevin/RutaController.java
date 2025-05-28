@@ -52,7 +52,7 @@ public class RutaController {
 
         RutaModel creada = rutaService.createRuta(model);
 
-        // Convertimos a DTO de respuesta
+
         RutaDTO response = new RutaDTO();
         response.setIdRuta(creada.getIdRuta());
         response.setFechaInicio(creada.getFechaInicio());
