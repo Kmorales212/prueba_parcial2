@@ -29,16 +29,16 @@ public class RutaController {
         model.setFechaInicio(dto.getFechaInicio());
         model.setDescripcion(dto.getDescripcion());
 
-        // Ciudad desde ID (convertimos String a Integer)
+
         CiudadModelo ciudad = new CiudadModelo();
         ciudad.setIdCiudad(Integer.parseInt(dto.getCiudadId()));
         model.setCiudad(ciudad);
 
-        // Direcciones
+
         model.setDireccionInicio(dto.getDireccionInicio());
         model.setDireccionDestino(dto.getDireccionDestino());
 
-        // Envíos asociados (si los tienes como ID, deberías mapearlos a EnvioModelo con solo el ID)
+
         List<EnvioModelo> envios = new ArrayList<>();
         if (dto.getIdsEnvios() != null) {
             for (String idEnvio : dto.getIdsEnvios()) {
