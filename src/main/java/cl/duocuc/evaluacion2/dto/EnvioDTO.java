@@ -9,4 +9,5 @@ public class EnvioDTO {
     private String idEnvio;
     private LocalDate fechaEnvio;
     private EstadoEnvio estado;
+    private String direccionEntregaResumen;
 }
