@@ -19,4 +19,8 @@ public class EnvioModelo {
 
     @OneToOne(cascade = CascadeType.ALL)
     private DireccionModelo direccionEntrega;
+
+    @ManyToOne
+    @JoinColumn(name = "id_ruta")
+    private RutaModel ruta;
 }
