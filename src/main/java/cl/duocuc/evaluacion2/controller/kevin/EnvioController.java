@@ -35,11 +35,18 @@ public class EnvioController {
         response.setIdEnvio(creado.getIdEnvio());
         response.setFechaEnvio(creado.getFechaEnvio());
         response.setEstado(creado.getEstado());
-        response.setDireccionEntregaResumen(
-                creado.getDireccionEntrega().getNombDireccion() + " " +
-                creado.getDireccionEntrega().getNumDireccion() + ", " +
-                creado.getDireccionEntrega().getComuna().getCiudad().getNombCiudad()
-        );
+        String resumen = "";
+        if (creado.getDireccionEntrega() != null &&
+                creado.getDireccionEntrega().getComuna() != null &&
+                creado.getDireccionEntrega().getComuna().getCiudad() != null) {
+            resumen = creado.getDireccionEntrega().getNombDireccion() + " " +
+                    creado.getDireccionEntrega().getNumDireccion() + ", " +
+                    creado.getDireccionEntrega().getComuna().getCiudad().getNombCiudad();
+        } else {
+            resumen = "Dirección incompleta";
+        }
+        response.setDireccionEntregaResumen(resumen);
+
 
         return ResponseEntity.ok(response);
     }
