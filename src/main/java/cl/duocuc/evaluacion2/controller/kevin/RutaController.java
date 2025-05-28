@@ -31,7 +31,13 @@ public class RutaController {
 
 
         CiudadModelo ciudad = new CiudadModelo();
-        ciudad.setIdCiudad(Integer.parseInt(dto.getCiudadId()));
+
+        if (dto.getCiudadId() != null && !dto.getCiudadId().isEmpty()) {
+            ciudad.setIdCiudad(Integer.parseInt(dto.getCiudadId()));
+        } else {
+
+            throw new IllegalArgumentException("El campo ciudadId es obligatorio y no puede estar vacío");
+        }
         model.setCiudad(ciudad);
 
 
@@ -44,7 +50,7 @@ public class RutaController {
             for (String idEnvio : dto.getIdsEnvios()) {
                 EnvioModelo envio = new EnvioModelo();
                 envio.setIdEnvio(idEnvio);
-                envio.setRuta(model); // Estableces la relación inversa
+                envio.setRuta(model);
                 envios.add(envio);
             }
         }
