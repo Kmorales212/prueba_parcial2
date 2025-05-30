@@ -28,6 +28,8 @@ public class EnvioController {
         model.setIdEnvio(dto.getIdEnvio());
         model.setFechaEnvio(dto.getFechaEnvio());
         model.setDireccionEntrega(dto.getDireccionEntrega());
+        model.setEstado(dto.getEstado());
+
 
         EnvioModelo creado = envioService.createEnvio(model);
 
@@ -51,7 +53,7 @@ public class EnvioController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping
+    @GetMapping("/lstarTodo")
     public List<EnvioDTO> listarEnvios() {
         return envioService.getAllEnvios().stream().map(envio -> {
             EnvioDTO dto = new EnvioDTO();
@@ -65,7 +67,7 @@ public class EnvioController {
         }).collect(Collectors.toList());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/listar/{id}")
     public ResponseEntity<EnvioDTO> obtenerEnvio(@PathVariable String id) {
         Optional<EnvioModelo> envioOpt = envioService.getEnvioById(id);
 
@@ -89,5 +91,17 @@ public class EnvioController {
 
         return ResponseEntity.ok(dto);
     }
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<Void> eliminarEnvio(@PathVariable String id) {
+        Optional<EnvioModelo> envioOpt = envioService.getEnvioById(id);
+
+        if (envioOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        envioService.deleteEnvio(id);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
