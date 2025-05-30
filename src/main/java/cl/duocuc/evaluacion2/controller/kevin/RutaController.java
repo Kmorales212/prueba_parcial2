@@ -22,7 +22,7 @@ public class RutaController {
     @Autowired
     private RutaService rutaService;
 
-    @PostMapping
+    @PostMapping("/crear")
     public ResponseEntity<RutaDTO> crearRuta(@RequestBody CrearRutaDTO dto) {
         RutaModel model = new RutaModel();
         model.setIdRuta(dto.getIdRuta());
@@ -75,7 +75,7 @@ public class RutaController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping
+    @GetMapping("listar")
     public List<RutaDTO> listarRutas() {
         return rutaService.getAllRutas().stream().map(ruta -> {
             RutaDTO dto = new RutaDTO();
