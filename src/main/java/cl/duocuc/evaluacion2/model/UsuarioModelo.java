@@ -1,5 +1,6 @@
 package cl.duocuc.evaluacion2.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 //EliezerCarrasco
@@ -22,6 +23,7 @@ public class UsuarioModelo {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_direccion")
+    @JsonManagedReference
     private DireccionModelo direccion;
 
 

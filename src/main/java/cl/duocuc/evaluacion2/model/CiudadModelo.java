@@ -1,5 +1,7 @@
 package cl.duocuc.evaluacion2.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -16,6 +18,7 @@ public class CiudadModelo {
     private String nombCiudad;
 
     @OneToMany(mappedBy = "ciudad", cascade = CascadeType.ALL)
+    @JsonManagedReference("ciudad-comuna")
     private List<ComunaModelo> comunas;
 
 

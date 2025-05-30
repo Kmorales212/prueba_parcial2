@@ -1,5 +1,7 @@
 package cl.duocuc.evaluacion2.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 //EliezerCarrasco
@@ -19,6 +21,7 @@ public class DireccionModelo {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_comuna")
+    @JsonBackReference("direccion-comuna")
     private ComunaModelo comuna;
 
 
