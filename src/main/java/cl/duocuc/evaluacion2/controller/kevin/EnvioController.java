@@ -15,14 +15,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/envios")
+@RequestMapping("/api/envios")
 public class EnvioController {
 
     @Autowired
     private EnvioService envioService;
 
 
-    @PostMapping
+    @PostMapping("/crear")
     public ResponseEntity<EnvioDTO> crearEnvio(@RequestBody CrearEnvioDTO dto) {
         EnvioModelo model = new EnvioModelo();
         model.setIdEnvio(dto.getIdEnvio());
