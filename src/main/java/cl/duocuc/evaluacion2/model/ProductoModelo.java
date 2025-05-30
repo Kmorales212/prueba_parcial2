@@ -14,4 +14,8 @@ public class ProductoModelo {
     private String nombre;
     private String descripcion;
     private Double precio;
+
+    @ManyToOne
+    @JoinColumn(name = "envio_id")
+    private EnvioModelo envio;
 }

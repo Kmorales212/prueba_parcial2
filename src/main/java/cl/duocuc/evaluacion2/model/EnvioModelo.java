@@ -3,7 +3,7 @@ package cl.duocuc.evaluacion2.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
+import java.util.List;
 import java.time.LocalDate;
 
 @Data
@@ -30,4 +30,6 @@ public class EnvioModelo {
     @JoinColumn(name = "id_ruta")
     private RutaModel ruta;
 
+    @OneToMany(mappedBy = "envio", cascade = CascadeType.ALL)
+    private List<ProductoModelo> productos;
 }
