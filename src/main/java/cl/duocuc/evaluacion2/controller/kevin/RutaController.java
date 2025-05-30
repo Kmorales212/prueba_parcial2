@@ -3,9 +3,9 @@ package cl.duocuc.evaluacion2.controller.kevin;
 import cl.duocuc.evaluacion2.dto.CrearRutaDTO;
 import cl.duocuc.evaluacion2.dto.RutaDTO;
 import cl.duocuc.evaluacion2.model.RutaModel;
-import cl.duocuc.evaluacion2.service.RutaService;
 import cl.duocuc.evaluacion2.model.CiudadModelo;
 import cl.duocuc.evaluacion2.model.EnvioModelo;
+import cl.duocuc.evaluacion2.service.RutaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/rutas")
+@RequestMapping("/api/rutas")
 public class RutaController {
 
     @Autowired
@@ -24,40 +24,7 @@ public class RutaController {
 
     @PostMapping("/crear")
     public ResponseEntity<RutaDTO> crearRuta(@RequestBody CrearRutaDTO dto) {
-        RutaModel model = new RutaModel();
-        model.setIdRuta(dto.getIdRuta());
-        model.setFechaInicio(dto.getFechaInicio());
-        model.setDescripcion(dto.getDescripcion());
-
-
-        CiudadModelo ciudad = new CiudadModelo();
-
-        if (dto.getCiudadId() != null && !dto.getCiudadId().isEmpty()) {
-            ciudad.setIdCiudad(Integer.parseInt(dto.getCiudadId()));
-        } else {
-
-            throw new IllegalArgumentException("El campo ciudadId es obligatorio y no puede estar vacío");
-        }
-        model.setCiudad(ciudad);
-
-
-        model.setDireccionInicio(dto.getDireccionInicio());
-        model.setDireccionDestino(dto.getDireccionDestino());
-
-
-        List<EnvioModelo> envios = new ArrayList<>();
-        if (dto.getIdsEnvios() != null) {
-            for (String idEnvio : dto.getIdsEnvios()) {
-                EnvioModelo envio = new EnvioModelo();
-                envio.setIdEnvio(idEnvio);
-                envio.setRuta(model);
-                envios.add(envio);
-            }
-        }
-        model.setEnvios(envios);
-
-        RutaModel creada = rutaService.createRuta(model);
-
+        RutaModel creada = rutaService.crearRuta(dto);
 
         RutaDTO response = new RutaDTO();
         response.setIdRuta(creada.getIdRuta());
@@ -75,7 +42,7 @@ public class RutaController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("listar")
+    @GetMapping("/listar")
     public List<RutaDTO> listarRutas() {
         return rutaService.getAllRutas().stream().map(ruta -> {
             RutaDTO dto = new RutaDTO();
@@ -92,5 +59,10 @@ public class RutaController {
             );
             return dto;
         }).collect(Collectors.toList());
+    }
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<Void> eliminarRuta(@PathVariable("id") String id) {
+        rutaService.eliminarRutaPorId(id);
+        return ResponseEntity.noContent().build();
     }
 }

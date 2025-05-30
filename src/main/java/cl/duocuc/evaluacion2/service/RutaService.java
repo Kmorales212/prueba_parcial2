@@ -1,12 +1,18 @@
 package cl.duocuc.evaluacion2.service;
 
+import cl.duocuc.evaluacion2.dto.CrearRutaDTO;
+import cl.duocuc.evaluacion2.model.CiudadModelo;
+import cl.duocuc.evaluacion2.model.EnvioModelo;
+import cl.duocuc.evaluacion2.model.EstadoRuta;
 import cl.duocuc.evaluacion2.model.RutaModel;
+import cl.duocuc.evaluacion2.repository.CiudadRepository;
+import cl.duocuc.evaluacion2.repository.EnvioRepository;
 import cl.duocuc.evaluacion2.repository.RutaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RutaService {
@@ -14,42 +20,41 @@ public class RutaService {
     @Autowired
     private RutaRepository rutaRepository;
 
+    @Autowired
+    private CiudadRepository ciudadRepository;
+
+    @Autowired
+    private EnvioRepository envioRepository;
+
+    public RutaModel crearRuta(CrearRutaDTO dto) {
+        RutaModel ruta = new RutaModel();
+
+        ruta.setIdRuta(dto.getIdRuta());
+        ruta.setFechaInicio(dto.getFechaInicio());
+        ruta.setDescripcion(dto.getDescripcion());
+        ruta.setDireccionInicio(dto.getDireccionInicio());
+        ruta.setDireccionDestino(dto.getDireccionDestino());
+        ruta.setEstado(EstadoRuta.PENDIENTE);
+
+
+        CiudadModelo ciudad = ciudadRepository.findById(Integer.parseInt(dto.getCiudadId()))
+                .orElseThrow(() -> new RuntimeException("Ciudad no encontrada"));
+        ruta.setCiudad(ciudad);
+
+        List<EnvioModelo> envios = dto.getIdsEnvios().stream()
+                .map(id -> envioRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("Envío no encontrado: " + id)))
+                .collect(Collectors.toList());
+
+        ruta.setEnvios(envios);
+
+        return rutaRepository.save(ruta);
+    }
     public List<RutaModel> getAllRutas() {
         return rutaRepository.findAll();
     }
-
-    public Optional<RutaModel> getRutaById(String id) {
-        return rutaRepository.findById(id);
+    public void eliminarRutaPorId(String idRuta) {
+        rutaRepository.deleteById(idRuta);
     }
-
-    public RutaModel createRuta(RutaModel ruta) {
-        return rutaRepository.save(ruta);
-    }
-
-    public Optional<RutaModel> updateRuta(String id, RutaModel rutaDetails) {
-        Optional<RutaModel> optionalRuta = rutaRepository.findById(id);
-        if (optionalRuta.isEmpty()) {
-            return Optional.empty();
-        }
-        RutaModel ruta = optionalRuta.get();
-        ruta.setFechaInicio(rutaDetails.getFechaInicio());
-        ruta.setEnvios(rutaDetails.getEnvios());
-        ruta.setDireccionInicio(rutaDetails.getDireccionInicio());
-        ruta.setDireccionDestino(rutaDetails.getDireccionDestino());
-        ruta.setCiudad(rutaDetails.getCiudad());
-        ruta.setEstado(rutaDetails.getEstado());
-        ruta.setDescripcion(rutaDetails.getDescripcion());
-
-        return Optional.of(rutaRepository.save(ruta));
-    }
-
-    public boolean deleteRuta(String id) {
-        if (!rutaRepository.existsById(id)) {
-            return false;
-        }
-        rutaRepository.deleteById(id);
-        return true;
-    }
-
 
 }
