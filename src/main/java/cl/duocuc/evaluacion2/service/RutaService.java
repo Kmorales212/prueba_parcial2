@@ -56,5 +56,13 @@ public class RutaService {
     public void eliminarRutaPorId(String idRuta) {
         rutaRepository.deleteById(idRuta);
     }
+    public RutaModel actualizarEstado(String id, EstadoRuta nuevoEstado) {
+        RutaModel ruta = rutaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Ruta no encontrada"));
+
+        ruta.setEstado(nuevoEstado);
+        return rutaRepository.save(ruta);
+    }
+
 
 }

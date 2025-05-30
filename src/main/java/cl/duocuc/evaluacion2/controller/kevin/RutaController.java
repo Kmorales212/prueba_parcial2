@@ -2,6 +2,7 @@ package cl.duocuc.evaluacion2.controller.kevin;
 
 import cl.duocuc.evaluacion2.dto.CrearRutaDTO;
 import cl.duocuc.evaluacion2.dto.RutaDTO;
+import cl.duocuc.evaluacion2.model.EstadoRuta;
 import cl.duocuc.evaluacion2.model.RutaModel;
 import cl.duocuc.evaluacion2.model.CiudadModelo;
 import cl.duocuc.evaluacion2.model.EnvioModelo;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -65,4 +67,17 @@ public class RutaController {
         rutaService.eliminarRutaPorId(id);
         return ResponseEntity.noContent().build();
     }
+    @PutMapping("/estado/{id}")
+    public ResponseEntity<?> actualizarEstadoRuta(@PathVariable String id, @RequestBody Map<String, String> body) {
+        try {
+            EstadoRuta nuevoEstado = EstadoRuta.valueOf(body.get("estado"));
+            RutaModel rutaActualizada = rutaService.actualizarEstado(id, nuevoEstado);
+            return ResponseEntity.ok(rutaActualizada);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Estado inválido");
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

@@ -1,6 +1,7 @@
 package cl.duocuc.evaluacion2.service;
 
 import cl.duocuc.evaluacion2.model.EnvioModelo;
+import cl.duocuc.evaluacion2.model.EstadoEnvio;
 import cl.duocuc.evaluacion2.repository.EnvioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,11 @@ public class EnvioService {
         envioRepository.deleteById(id);
         return true;
     }
-
+    public Optional<EnvioModelo> actualizarEstado(String id, EstadoEnvio nuevoEstado) {
+        return envioRepository.findById(id).map(envio -> {
+            envio.setEstado(nuevoEstado);
+            return envioRepository.save(envio);
+        });
+    }
 
 }

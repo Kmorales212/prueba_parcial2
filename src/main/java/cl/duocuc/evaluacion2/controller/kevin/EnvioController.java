@@ -5,12 +5,14 @@ package cl.duocuc.evaluacion2.controller.kevin;
 import cl.duocuc.evaluacion2.dto.CrearEnvioDTO;
 import cl.duocuc.evaluacion2.dto.EnvioDTO;
 import cl.duocuc.evaluacion2.model.EnvioModelo;
+import cl.duocuc.evaluacion2.model.EstadoEnvio;
 import cl.duocuc.evaluacion2.service.EnvioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -101,6 +103,17 @@ public class EnvioController {
 
         envioService.deleteEnvio(id);
         return ResponseEntity.noContent().build();
+    }
+    @PutMapping("/estado/{id}")
+    public ResponseEntity<?> actualizarEstadoEnvio(@PathVariable String id, @RequestBody Map<String, String> body) {
+        try {
+            EstadoEnvio nuevoEstado = EstadoEnvio.valueOf(body.get("estado"));
+            return envioService.actualizarEstado(id, nuevoEstado)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Estado inválido");
+        }
     }
 
 
