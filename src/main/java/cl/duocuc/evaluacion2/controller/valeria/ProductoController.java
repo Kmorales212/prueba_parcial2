@@ -1,4 +1,4 @@
-package cl.duocuc.evaluacion2.controller.Valeria;
+package cl.duocuc.evaluacion2.controller.valeria;
 
 import cl.duocuc.evaluacion2.dto.ProductoDTO;
 import cl.duocuc.evaluacion2.model.ProductoModelo;
