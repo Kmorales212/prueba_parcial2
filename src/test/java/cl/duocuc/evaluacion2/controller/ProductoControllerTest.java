@@ -91,7 +91,7 @@ public class ProductoControllerTest {
     }
 
     @Test
-    void testBuscarPorId_found() throws Exception {
+    void testBuscarPorId_Encontrado() throws Exception {
         ProductoModelo producto = new ProductoModelo();
         producto.setId(1L);
         producto.setNombre("P1");
@@ -106,7 +106,7 @@ public class ProductoControllerTest {
     }
 
     @Test
-    void testBuscarPorId_notFound() throws Exception {
+    void testBuscarPorId_noEncontrado() throws Exception {
         when(productoService.obtenerPorId(999L)).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/api/productos/buscar/999"))
