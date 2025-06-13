@@ -1,23 +1,24 @@
 package cl.duocuc.evaluacion2.controller;
 
+
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+
 import cl.duocuc.evaluacion2.controller.valeria.ProductoController;
 import cl.duocuc.evaluacion2.dto.ProductoDTO;
-import cl.duocuc.evaluacion2.model.ProductoModelo;
-import cl.duocuc.evaluacion2.service.ProductoService;
+import cl.duocuc.evaluacion2.model.*;
+import cl.duocuc.evaluacion2.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
 import java.util.Arrays;
 import java.util.Optional;
-
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ProductoController.class)
 public class ProductoControllerTest {
@@ -31,6 +32,21 @@ public class ProductoControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    private ProductoDTO productoDTO;
+    private ProductoModelo productoModelo;
+    @BeforeEach
+    void setUp() {
+        productoDTO = new ProductoDTO();
+        productoDTO.setNombre("Producto A");
+        productoDTO.setDescripcion("Descripción");
+        productoDTO.setPrecio(99.9);
+
+        productoModelo = new ProductoModelo();
+        productoModelo.setId(1L);
+        productoModelo.setNombre(productoDTO.getNombre());
+        productoModelo.setDescripcion(productoDTO.getDescripcion());
+        productoModelo.setPrecio(productoDTO.getPrecio());
+    }
     @Test
     void testCrearProducto() throws Exception {
         ProductoDTO dto = new ProductoDTO();
