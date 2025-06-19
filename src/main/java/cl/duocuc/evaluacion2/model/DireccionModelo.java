@@ -24,6 +24,10 @@ public class DireccionModelo {
     @JsonBackReference("direccion-comuna")
     private ComunaModelo comuna;
 
+    @ManyToOne
+    @JsonBackReference("usuario-direccion")
+    private UsuarioModelo usuario;
+
 
     public Integer getIdDireccion() {
         return idDireccion;

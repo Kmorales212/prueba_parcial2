@@ -55,7 +55,7 @@ public class EnvioController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/lstarTodo")
+    @GetMapping("/listarTodo")
     public List<EnvioDTO> listarEnvios() {
         return envioService.getAllEnvios().stream().map(envio -> {
             EnvioDTO dto = new EnvioDTO();

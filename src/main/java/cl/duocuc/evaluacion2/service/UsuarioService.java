@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-//EliezerCarrasco
+// EliezerCarrasco
 @Service
 public class UsuarioService {
 
@@ -31,44 +31,54 @@ public class UsuarioService {
     @Autowired
     private ComunaRepository comunaRepository;
 
-
-
+    // Listar todos los usuarios
     public List<UsuarioModelo> findAll() {
         return usuarioRepository.findAll();
     }
 
+    // Buscar usuario por RUT
     public Optional<UsuarioModelo> findById(String rut) {
         return usuarioRepository.findById(rut);
     }
 
+    // Guardar usuario simple
     public UsuarioModelo save(UsuarioModelo usuario) {
         return usuarioRepository.save(usuario);
     }
 
+    // Eliminar usuario por RUT
     public void deleteById(String rut) {
         usuarioRepository.deleteById(rut);
     }
 
     // Registrar usuario con dirección, comuna y ciudad (todo completo)
     public UsuarioModelo registrarUsuarioCompleto(RegistroUsuarioCompletoDTO dto) {
-        CiudadModelo ciudad = ciudadRepository.findAll().stream()
-                .filter(c -> c.getNombCiudad().equalsIgnoreCase(dto.getNombreCiudad()))
-                .findFirst()
-                .orElseGet(() -> {
-                    CiudadModelo nuevaCiudad = new CiudadModelo();
-                    nuevaCiudad.setNombCiudad(dto.getNombreCiudad());
-                    return ciudadRepository.save(nuevaCiudad);
-                });
+        if (dto.getNombDireccion() == null || dto.getNumDireccion() <= 0) {
+            throw new RuntimeException("Datos de dirección inválidos");
+        }
 
-        ComunaModelo comuna = comunaRepository.findAll().stream()
-                .filter(c -> c.getNomComuna().equalsIgnoreCase(dto.getNombreComuna()))
-                .findFirst()
-                .orElseGet(() -> {
-                    ComunaModelo nuevaComuna = new ComunaModelo();
-                    nuevaComuna.setNomComuna(dto.getNombreComuna());
-                    nuevaComuna.setCiudad(ciudad);
-                    return comunaRepository.save(nuevaComuna);
-                });
+        Optional<CiudadModelo> ciudadOpt = ciudadRepository.findAll().stream()
+                .filter(c -> c.getNombCiudad().equalsIgnoreCase(dto.getNombreCiudad()))
+                .findFirst();
+
+        if (ciudadOpt.isEmpty()) {
+            throw new RuntimeException("Ciudad no encontrada");
+        }
+
+        CiudadModelo ciudad = ciudadOpt.get();
+
+        Optional<ComunaModelo> comunaOpt = comunaRepository.findAll().stream()
+                .filter(c -> c.getNomComuna() != null &&
+                        c.getNomComuna().equalsIgnoreCase(dto.getNombreComuna()) &&
+                        c.getCiudad() != null &&
+                        c.getCiudad().getNombCiudad().equalsIgnoreCase(dto.getNombreCiudad()))
+                .findFirst();
+
+        if (comunaOpt.isEmpty()) {
+            throw new RuntimeException("Comuna no encontrada");
+        }
+
+        ComunaModelo comuna = comunaOpt.get();
 
         DireccionModelo direccion = new DireccionModelo();
         direccion.setNombDireccion(dto.getNombDireccion());
@@ -84,5 +94,30 @@ public class UsuarioService {
         usuario.setDireccion(direccion);
 
         return usuarioRepository.save(usuario);
+    }
+
+    // Crear un nuevo usuario simple (sin dirección ni validaciones)
+    public UsuarioModelo createUser(UsuarioModelo usuario) {
+        return usuarioRepository.save(usuario);
+    }
+
+    // Actualizar un usuario existente por RUT
+    public Optional<UsuarioModelo> updateUser(String rut, UsuarioModelo nuevoUsuario) {
+        return usuarioRepository.findById(rut).map(usuarioExistente -> {
+            usuarioExistente.setNombreUsur(nuevoUsuario.getNombreUsur());
+            usuarioExistente.setApellidoUsur(nuevoUsuario.getApellidoUsur());
+            usuarioExistente.setCorreoUsur(nuevoUsuario.getCorreoUsur());
+            usuarioExistente.setDireccion(nuevoUsuario.getDireccion());
+            return usuarioRepository.save(usuarioExistente);
+        });
+    }
+
+    // Eliminar usuario por RUT, retorna true si se eliminó
+    public boolean deleteUser(String rut) {
+        if (usuarioRepository.existsById(rut)) {
+            usuarioRepository.deleteById(rut);
+            return true;
+        }
+        return false;
     }
 }

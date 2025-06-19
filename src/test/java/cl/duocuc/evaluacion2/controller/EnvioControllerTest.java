@@ -17,6 +17,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @WebMvcTest(EnvioController.class)
 public class EnvioControllerTest {
@@ -63,4 +65,62 @@ public class EnvioControllerTest {
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void testListarTodos() throws Exception {
+        EnvioModelo envio = new EnvioModelo();
+        envio.setIdEnvio("ENV-001");
+        envio.setFechaEnvio(LocalDate.of(2025, 6, 7));
+        envio.setEstado(EstadoEnvio.PENDIENTE);
+
+        DireccionModelo direccion = new DireccionModelo();
+        direccion.setNombDireccion("Av. Siempre Viva");
+        envio.setDireccionEntrega(direccion);
+
+        when(envioService.getAllEnvios()).thenReturn(List.of(envio));
+
+        mockMvc.perform(get("/api/envios/listarTodo"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].idEnvio").value("ENV-001"))
+                .andExpect(jsonPath("$[0].direccionEntregaResumen").value("Av. Siempre Viva"));
+    }
+
+    @Test
+    void testObtenerPorId() throws Exception {
+        envioModelo.setDireccionEntrega(new DireccionModelo());
+        envioModelo.getDireccionEntrega().setNombDireccion("Calle 1");
+
+        when(envioService.getEnvioById("ENV-001")).thenReturn(Optional.of(envioModelo));
+
+        mockMvc.perform(get("/api/envios/listar/ENV-001"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.idEnvio").value("ENV-001"))
+                .andExpect(jsonPath("$.direccionEntregaResumen").value("Calle 1"));
+    }
+
+    @Test
+    void testEliminarPorId() throws Exception {
+        when(envioService.getEnvioById("ENV-001")).thenReturn(Optional.of(envioModelo));
+
+        mockMvc.perform(delete("/api/envios/eliminar/ENV-001"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void testActualizarEstado() throws Exception {
+        envioModelo.setEstado(EstadoEnvio.EN_CAMINO);
+
+        when(envioService.actualizarEstado(eq("ENV-001"), eq(EstadoEnvio.EN_CAMINO)))
+                .thenReturn(Optional.of(envioModelo));
+
+        mockMvc.perform(put("/api/envios/estado/ENV-001")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"estado\":\"EN_CAMINO\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.estado").value("EN_CAMINO"));
+    }
+
+
+
+
 }

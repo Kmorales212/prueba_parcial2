@@ -23,7 +23,7 @@ public class UsuarioModelo {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_direccion")
-    @JsonManagedReference
+    @JsonManagedReference("usuario-direccion")
     private DireccionModelo direccion;
 
 
