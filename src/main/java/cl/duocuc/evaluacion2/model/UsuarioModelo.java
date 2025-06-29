@@ -21,7 +21,7 @@ public class UsuarioModelo {
     @Column(name = "correo_usur")
     private String correoUsur;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "id_direccion")
     @JsonManagedReference("usuario-direccion")
     private DireccionModelo direccion;
