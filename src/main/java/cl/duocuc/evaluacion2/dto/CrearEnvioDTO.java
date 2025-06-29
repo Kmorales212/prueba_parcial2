@@ -9,7 +9,7 @@ import lombok.Data;
 public class CrearEnvioDTO {
     private String idEnvio;
     private LocalDate fechaEnvio;
-    private DireccionModelo direccionEntrega;
+    private Integer idDireccionEntrega;
     private EstadoEnvio estado;
 
 }
