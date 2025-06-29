@@ -7,6 +7,8 @@ import cl.duocuc.evaluacion2.dto.EnvioDTO;
 import cl.duocuc.evaluacion2.model.EnvioModelo;
 import cl.duocuc.evaluacion2.model.EstadoEnvio;
 import cl.duocuc.evaluacion2.service.EnvioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +20,13 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/envios")
+@Tag(name = "Gestion de Envios")
 public class EnvioController {
 
     @Autowired
     private EnvioService envioService;
 
-
+    @Operation(summary = "crear envio nuevo", description = "este metodo se encarga de crear un nuevo envio y se guarda en la base de datos")
     @PostMapping("/crear")
     public ResponseEntity<EnvioDTO> crearEnvio(@RequestBody CrearEnvioDTO dto) {
         EnvioModelo model = new EnvioModelo();
@@ -55,6 +58,7 @@ public class EnvioController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "listar todos los envios", description = "este metodo se encarga de listar todos los envios existentes en nuestra base de datos")
     @GetMapping("/listarTodo")
     public List<EnvioDTO> listarEnvios() {
         return envioService.getAllEnvios().stream().map(envio -> {
@@ -69,6 +73,7 @@ public class EnvioController {
         }).collect(Collectors.toList());
     }
 
+    @Operation(summary = "buscar un envio por su id", description = "este metodo se encarga de buscar un envio en nuestra base de datos mediante su id")
     @GetMapping("/listar/{id}")
     public ResponseEntity<EnvioDTO> obtenerEnvio(@PathVariable String id) {
         Optional<EnvioModelo> envioOpt = envioService.getEnvioById(id);
@@ -93,6 +98,7 @@ public class EnvioController {
 
         return ResponseEntity.ok(dto);
     }
+    @Operation(summary = "eliminar envio por su id", description = "este metodo se encarga de eliminar un envio guardado en la base de datos mediante su id")
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<Void> eliminarEnvio(@PathVariable String id) {
         Optional<EnvioModelo> envioOpt = envioService.getEnvioById(id);
@@ -104,6 +110,8 @@ public class EnvioController {
         envioService.deleteEnvio(id);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "actualiza el estado del envio por id", description = "este metodo se encarga de actualizar el estado del envio por ejemplo de preparando a entregando mediante a su id")
     @PutMapping("/estado/{id}")
     public ResponseEntity<?> actualizarEstadoEnvio(@PathVariable String id, @RequestBody Map<String, String> body) {
         try {

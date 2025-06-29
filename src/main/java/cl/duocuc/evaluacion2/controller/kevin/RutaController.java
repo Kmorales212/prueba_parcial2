@@ -8,6 +8,8 @@ import cl.duocuc.evaluacion2.model.CiudadModelo;
 import cl.duocuc.evaluacion2.model.EnvioModelo;
 import cl.duocuc.evaluacion2.service.RutaService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +21,13 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/rutas")
+@Tag(name = "Gestion de Rutas")
 public class RutaController {
 
     @Autowired
     private RutaService rutaService;
 
+    @Operation(summary = "crear ruta nueva", description = "este metodo se encarga de crear una nueva ruta y se guarda en la base de datos")
     @PostMapping("/crear")
     public ResponseEntity<RutaDTO> crearRuta(@RequestBody CrearRutaDTO dto) {
         RutaModel creada = rutaService.crearRuta(dto);
@@ -44,6 +48,7 @@ public class RutaController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "listar todas las rutas", description = "este metodo se encarga de listar todas las rutas existentes en nuestra base de datos")
     @GetMapping("/listar")
     public List<RutaDTO> listarRutas() {
         return rutaService.getAllRutas().stream().map(ruta -> {
@@ -62,11 +67,15 @@ public class RutaController {
             return dto;
         }).collect(Collectors.toList());
     }
+
+    @Operation(summary = "eliminar ruta por su id", description = "este metodo se encarga de eliminar una ruta guardada en la base de datos mediante su id")
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<Void> eliminarRuta(@PathVariable("id") String id) {
         rutaService.eliminarRutaPorId(id);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "actualiza el estado de la ruta por id", description = "este metodo se encarga de actualizar el estado de la ruta por ejemplo de en camino a entregando mediante a su id")
     @PutMapping("/estado/{id}")
     public ResponseEntity<?> actualizarEstadoRuta(@PathVariable String id, @RequestBody Map<String, String> body) {
         try {
