@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -74,7 +75,8 @@ public class UsuarioServiceTest {
     }
 
     @Test
-    public void testRegistrarUsuarioCompleto_ciudadNoEncontrada() {
+    void testRegistrarUsuarioCompleto_ciudadSeCreaYComunaExiste() {
+        // Arrange
         RegistroUsuarioCompletoDTO dto = new RegistroUsuarioCompletoDTO();
         dto.setRutUsur("11111111-1");
         dto.setNombreUsur("Pepe");
@@ -85,82 +87,144 @@ public class UsuarioServiceTest {
         dto.setNombDireccion("Calle Falsa");
         dto.setNumDireccion(123);
 
-        when(ciudadRepository.findAll()).thenReturn(Arrays.asList());
+        // No hay ciudades
+        when(ciudadRepository.findAll()).thenReturn(List.of());
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            usuarioService.registrarUsuarioCompleto(dto);
-        });
+        // La comuna sí existe
+        CiudadModelo otraCiudad = new CiudadModelo();
+        otraCiudad.setIdCiudad(1);
+        otraCiudad.setNombCiudad("OtraCiudad");
 
-        assertEquals("Ciudad no encontrada", exception.getMessage());
+        ComunaModelo comunaExistente = new ComunaModelo();
+        comunaExistente.setIdComuna(1);
+        comunaExistente.setNomComuna("Ñuñoa");
+        comunaExistente.setCiudad(otraCiudad);
+
+        when(comunaRepository.findAll()).thenReturn(List.of(comunaExistente));
+
+        // Simular creación de ciudad
+        CiudadModelo ciudadCreada = new CiudadModelo();
+        ciudadCreada.setIdCiudad(99);
+        ciudadCreada.setNombCiudad("CiudadInventada");
+
+        when(ciudadRepository.save(any(CiudadModelo.class))).thenReturn(ciudadCreada);
+
+        when(direccionRepository.save(any(DireccionModelo.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(usuarioRepository.save(any(UsuarioModelo.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        // Act
+        UsuarioModelo resultado = usuarioService.registrarUsuarioCompleto(dto);
+
+        // Assert
+        assertNotNull(resultado);
+        assertEquals("Pepe", resultado.getNombreUsur());
+
+        verify(ciudadRepository, times(1)).save(any(CiudadModelo.class));
+        verify(comunaRepository, never()).save(any(ComunaModelo.class));
+        verify(direccionRepository, times(1)).save(any(DireccionModelo.class));
+        verify(usuarioRepository, times(1)).save(any(UsuarioModelo.class));
     }
 
+
     @Test
-    void testRegistrarUsuarioCompleto_comunaNoEncontrada() {
+    void testRegistrarUsuarioCompleto_ciudadExisteYComunaSeCrea() {
+        // Arrange
         RegistroUsuarioCompletoDTO dto = new RegistroUsuarioCompletoDTO();
         dto.setRutUsur("11111111-1");
         dto.setNombreUsur("Pepe");
         dto.setApellidoUsur("Jara");
-        dto.setCorreoUsur("Pepe@correo.com");
+        dto.setCorreoUsur("pepe@correo.cl");
         dto.setNombreCiudad("Santiago");
         dto.setNombreComuna("Ñuñoa");
-
         dto.setNombDireccion("Calle Falsa");
         dto.setNumDireccion(123);
 
-        // Ciudad correcta
-        CiudadModelo ciudad = new CiudadModelo();
-        ciudad.setIdCiudad(1);
-        ciudad.setNombCiudad("Santiago");
+        // Ciudad existente
+        CiudadModelo ciudadExistente = new CiudadModelo();
+        ciudadExistente.setIdCiudad(1);
+        ciudadExistente.setNombCiudad("Santiago");
 
-        // Comuna con nombre distinto y ciudad no relacionada
-        CiudadModelo otraCiudad = new CiudadModelo();
-        otraCiudad.setIdCiudad(2);
-        otraCiudad.setNombCiudad("Valparaíso");
+        when(ciudadRepository.findAll()).thenReturn(List.of(ciudadExistente));
 
-        ComunaModelo comunaNoCoincidente = new ComunaModelo();
-        comunaNoCoincidente.setIdComuna(2);
-        comunaNoCoincidente.setNomComuna("Providencia"); // <- diferente
-        comunaNoCoincidente.setCiudad(otraCiudad); // <- ciudad también diferente
+        // No hay comunas
+        when(comunaRepository.findAll()).thenReturn(List.of());
 
-        when(ciudadRepository.findAll()).thenReturn(Arrays.asList(ciudad));
-        when(comunaRepository.findAll()).thenReturn(Arrays.asList(comunaNoCoincidente));
+        // Simular creación de comuna
+        ComunaModelo comunaCreada = new ComunaModelo();
+        comunaCreada.setIdComuna(99);
+        comunaCreada.setNomComuna("Ñuñoa");
+        comunaCreada.setCiudad(ciudadExistente);
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            usuarioService.registrarUsuarioCompleto(dto);
-        });
+        when(comunaRepository.save(any(ComunaModelo.class))).thenReturn(comunaCreada);
 
-        assertEquals("Comuna no encontrada", exception.getMessage());
+        when(direccionRepository.save(any(DireccionModelo.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(usuarioRepository.save(any(UsuarioModelo.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        // Act
+        UsuarioModelo resultado = usuarioService.registrarUsuarioCompleto(dto);
+
+        // Assert
+        assertNotNull(resultado);
+        assertEquals("Pepe", resultado.getNombreUsur());
+
+        verify(ciudadRepository, never()).save(any(CiudadModelo.class));
+        verify(comunaRepository, times(1)).save(any(ComunaModelo.class));
+        verify(direccionRepository, times(1)).save(any(DireccionModelo.class));
+        verify(usuarioRepository, times(1)).save(any(UsuarioModelo.class));
     }
 
 
+
+
     @Test
-    public void testRegistrarUsuarioCompleto_direccionInvalida() {
+    void testRegistrarUsuarioCompleto_direccionSeGuardaCorrectamente() {
+        // Arrange
         RegistroUsuarioCompletoDTO dto = new RegistroUsuarioCompletoDTO();
         dto.setRutUsur("11111111-1");
         dto.setNombreUsur("Pepe");
         dto.setApellidoUsur("Jara");
-        dto.setCorreoUsur("Pepe@correo.cl");
+        dto.setCorreoUsur("pepe@correo.cl");
         dto.setNombreCiudad("Santiago");
         dto.setNombreComuna("Ñuñoa");
-        dto.setNombDireccion(null);
-        dto.setNumDireccion(0);
+        dto.setNombDireccion("Calle Falsa");
+        dto.setNumDireccion(123);
 
-        CiudadModelo ciudad = new CiudadModelo();
-        ciudad.setIdCiudad(1);
-        ciudad.setNombCiudad("Santiago");
+        // Ciudad existente
+        CiudadModelo ciudadExistente = new CiudadModelo();
+        ciudadExistente.setIdCiudad(1);
+        ciudadExistente.setNombCiudad("Santiago");
 
-        ComunaModelo comuna = new ComunaModelo();
-        comuna.setIdComuna(1);
-        comuna.setNomComuna("Ñuñoa");
-        comuna.setCiudad(ciudad);
+        // Comuna existente
+        ComunaModelo comunaExistente = new ComunaModelo();
+        comunaExistente.setIdComuna(1);
+        comunaExistente.setNomComuna("Ñuñoa");
+        comunaExistente.setCiudad(ciudadExistente);
 
-        when(ciudadRepository.findAll()).thenReturn(Arrays.asList(ciudad));
-        when(comunaRepository.findAll()).thenReturn(Arrays.asList(comuna));
+        when(ciudadRepository.findAll()).thenReturn(List.of(ciudadExistente));
+        when(comunaRepository.findAll()).thenReturn(List.of(comunaExistente));
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            usuarioService.registrarUsuarioCompleto(dto);
-        });
+        // Simular que dirección devuelve la misma que se guarda
+        when(direccionRepository.save(any(DireccionModelo.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
 
-        assertEquals("Datos de dirección inválidos", exception.getMessage());
+        when(usuarioRepository.save(any(UsuarioModelo.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        // Act
+        UsuarioModelo resultado = usuarioService.registrarUsuarioCompleto(dto);
+
+        // Assert
+        assertNotNull(resultado);
+        assertEquals("Pepe", resultado.getNombreUsur());
+
+        // Verificar que se guardó dirección con los datos correctos
+        verify(direccionRepository).save(argThat(direccion ->
+                direccion.getNombDireccion().equals("Calle Falsa") &&
+                        direccion.getNumDireccion() == 123 &&
+                        direccion.getComuna().getNomComuna().equals("Ñuñoa")
+        ));
+
+        verify(usuarioRepository, times(1)).save(any(UsuarioModelo.class));
     }
+
 }
