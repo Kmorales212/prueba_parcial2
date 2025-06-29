@@ -2,6 +2,8 @@ package cl.duocuc.evaluacion2.controller.eliezer;
 
 import cl.duocuc.evaluacion2.model.CiudadModelo;
 import cl.duocuc.evaluacion2.service.CiudadService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,19 +12,20 @@ import java.util.List;
 //EliezerCarrasco
 @RestController
 @RequestMapping("/api/ciudades")
+@Tag(name = "Gestion de Ciudades")
 public class CiudadController {
 
     @Autowired
     private CiudadService ciudadService;
 
-    // Obtener todas las ciudades
+    @Operation(summary = "listar todas las ciudades", description = "este metodo se encarga de mostrar la lista de todas las ciudades existentes en nuestra base de datos")
     @GetMapping("/listarTodas")
     public ResponseEntity<List<CiudadModelo>> listarTodas() {
         List<CiudadModelo> ciudades = ciudadService.findAll();
         return ResponseEntity.ok(ciudades);
     }
 
-    // Obtener una ciudad por ID
+    @Operation(summary = "buscar ciudadad por id", description = "este metodo se encarga de buscar una ciudad existente mediante su id")
     @GetMapping("/obtenerPorId/{id}")
     public ResponseEntity<CiudadModelo> obtenerPorId(@PathVariable int id) {
         return ciudadService.findById(id)
@@ -30,14 +33,14 @@ public class CiudadController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Crear una nueva ciudad
+    @Operation(summary = "crear ciudad", description = "este metodo se encarga de crear una ciudad")
     @PostMapping("/crear")
     public ResponseEntity<CiudadModelo> crear(@RequestBody CiudadModelo ciudad) {
         CiudadModelo creada = ciudadService.save(ciudad);
         return ResponseEntity.ok(creada);
     }
 
-    // Actualizar una ciudad existente
+    @Operation(summary = "actualizar ciudad por id", description = "este metodo se encarga de actualizar una ciudad existente mediante su id")
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<CiudadModelo> actualizar(@PathVariable int id, @RequestBody CiudadModelo ciudad) {
         return ciudadService.findById(id).map(c -> {
@@ -47,7 +50,7 @@ public class CiudadController {
         }).orElse(ResponseEntity.notFound().build());
     }
 
-    // Eliminar una ciudad
+    @Operation(summary = "eliminar ciudad por id", description = "este metodo se encarga de eliminar una ciudad existente mediante su id")
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable int id) {
         if (ciudadService.findById(id).isPresent()) {

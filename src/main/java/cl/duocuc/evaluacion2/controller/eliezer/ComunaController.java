@@ -2,6 +2,8 @@ package cl.duocuc.evaluacion2.controller.eliezer;
 
 import cl.duocuc.evaluacion2.model.ComunaModelo;
 import cl.duocuc.evaluacion2.service.ComunaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,18 +12,19 @@ import java.util.List;
 //EliezerCarrasco
 @RestController
 @RequestMapping("/api/comunas")
+@Tag(name = "Gestion de comunas")
 public class ComunaController {
 
     @Autowired
     private ComunaService comunaService;
 
-    // Obtener todas las comunas
+    @Operation(summary = "listar todas las comunas", description = "este metodo se encarga de listar todas las comunas existentes en nuestra base de datos")
     @GetMapping("/listarTodas")
     public ResponseEntity<List<ComunaModelo>> listarTodas() {
         return ResponseEntity.ok(comunaService.findAll());
     }
 
-    // Obtener una comuna por ID
+    @Operation(summary = "buscar comuna por id", description = "este metodo se encarga de buscar una comuna mediante su id")
     @GetMapping("/obtenerPorId/{id}")
     public ResponseEntity<ComunaModelo> obtenerPorId(@PathVariable int id) {
         return comunaService.findById(id)
@@ -29,14 +32,14 @@ public class ComunaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Crear una nueva comuna
+    @Operation(summary = "crear comunas", description = "este metodo se encarga de crear una comuna")
     @PostMapping("/crear")
     public ResponseEntity<ComunaModelo> crear(@RequestBody ComunaModelo comuna) {
         ComunaModelo creada = comunaService.save(comuna);
         return ResponseEntity.ok(creada);
     }
 
-    // Actualizar una comuna existente
+    @Operation(summary = "actualizar comuna por id", description = "este metodo se encarga de actualizar una comuna mediante su id")
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<ComunaModelo> actualizar(@PathVariable int id, @RequestBody ComunaModelo comuna) {
         return comunaService.findById(id).map(c -> {
@@ -46,7 +49,7 @@ public class ComunaController {
         }).orElse(ResponseEntity.notFound().build());
     }
 
-    // Eliminar una comuna
+    @Operation(summary = "eliminar comuna por id", description = "este metodo se encarga de eliminar una comuna mediante su id")
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable int id) {
         if (comunaService.findById(id).isPresent()) {
