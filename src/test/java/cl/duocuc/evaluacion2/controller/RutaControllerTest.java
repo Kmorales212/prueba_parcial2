@@ -60,8 +60,8 @@ public class RutaControllerTest {
         dto.setFechaInicio(ruta.getFechaInicio());
         dto.setDescripcion("Ruta prueba");
         dto.setCiudadId("1");
-        dto.setDireccionInicio(new DireccionModelo());
-        dto.setDireccionDestino(new DireccionModelo());
+        dto.setIdDireccionInicio(1);
+        dto.setIdDireccionDestino(2);
         dto.setIdsEnvios(List.of("ENV-001"));
 
         when(rutaService.crearRuta(any())).thenReturn(ruta);

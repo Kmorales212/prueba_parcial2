@@ -40,19 +40,9 @@ public class RutaServiceTest {
         dto = new CrearRutaDTO();
         dto.setIdRuta("RUTA-001");
         dto.setFechaInicio(LocalDate.of(2025, 6, 8).atStartOfDay());
-
         dto.setDescripcion("Ruta de prueba");
-
-        DireccionModelo dirInicio = new DireccionModelo();
-        dirInicio.setNombDireccion("Inicio");
-        dirInicio.setNumDireccion(100);
-        dto.setDireccionInicio(dirInicio);
-
-        DireccionModelo dirDestino = new DireccionModelo();
-        dirDestino.setNombDireccion("Destino");
-        dirDestino.setNumDireccion(200);
-        dto.setDireccionDestino(dirDestino);
-
+        dto.setIdDireccionInicio(1);
+        dto.setIdDireccionDestino(2);
         dto.setCiudadId("1");
         dto.setIdsEnvios(List.of("ENV-001"));
     }

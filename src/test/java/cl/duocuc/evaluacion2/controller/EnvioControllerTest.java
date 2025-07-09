@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import cl.duocuc.evaluacion2.controller.kevin.EnvioController;
 import cl.duocuc.evaluacion2.dto.CrearEnvioDTO;
 import cl.duocuc.evaluacion2.model.*;
+import cl.duocuc.evaluacion2.repository.DireccionRepository;
 import cl.duocuc.evaluacion2.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +29,9 @@ public class EnvioControllerTest {
     @MockBean
     private EnvioService envioService;
 
+    @MockBean
+    private DireccionRepository direccionRepository;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -46,18 +50,19 @@ public class EnvioControllerTest {
         dto.setIdEnvio("ENV-001");
         dto.setFechaEnvio(LocalDate.of(2025, 6, 7));
         dto.setEstado(EstadoEnvio.PENDIENTE);
+        dto.setIdDireccionEntrega(1);
 
         DireccionModelo direccion = new DireccionModelo();
+        direccion.setIdDireccion(1);
         direccion.setNombDireccion("Calle Falsa");
         direccion.setNumDireccion(123);
-        dto.setDireccionEntrega(direccion);
 
         EnvioModelo envioMock = new EnvioModelo();
         envioMock.setIdEnvio("ENV-001");
         envioMock.setFechaEnvio(dto.getFechaEnvio());
         envioMock.setEstado(dto.getEstado());
-        envioMock.setDireccionEntrega(direccion);
 
+        when(direccionRepository.findById(1)).thenReturn(Optional.of(direccion));
         when(envioService.createEnvio(any())).thenReturn(envioMock);
 
         mockMvc.perform(post("/api/envios/crear")
@@ -65,6 +70,7 @@ public class EnvioControllerTest {
                         .content(objectMapper.writeValueAsString(dto)))
                 .andExpect(status().isOk());
     }
+
 
     @Test
     void testListarTodos() throws Exception {
